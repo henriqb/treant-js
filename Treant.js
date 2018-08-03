@@ -1,4 +1,6 @@
 /*
+ * henriqb : Updates to add multiple parents !
+ * 
  * Treant-js
  *
  * (c) 2013 Fran Peručić
@@ -1083,7 +1085,52 @@
          */
         root: function() {
             return this.nodeDB.get( 0 );
-        }
+        },
+        
+        /**
+         * @returns node with name = {name}
+         */
+        getNodeByName: function (name) {
+            for (var i = 0; i < this.nodeDB.db.length; i++) {
+                if (tree.nodeDB.db[i].text.name === name) {
+                    return tree.nodeDB.db[i];
+                }
+            }
+            return null;            
+        },
+        /**
+         * Creates parent
+         * @returns nothing
+         */
+        addConnectionToNode: function( treeNode, hidePoint, targetNode ) {
+			var stacked = treeNode.stackParentId,
+				connLine,
+				parent = ( targetNode ),
+
+            pathString = hidePoint ?
+                this.getPointPathString(hidePoint):
+                this.getPathString(parent, treeNode, stacked);
+                
+        
+            connLine = this._R.path( pathString );
+            this.connectionStore[treeNode.id] = connLine;
+
+            // don't show connector arrows por pseudo nodes
+            if ( treeNode.pseudo ) {
+                delete parent.connStyle.style['arrow-end'];
+            }
+            if ( parent.pseudo ) {
+                delete parent.connStyle.style['arrow-start'];
+            }
+
+            connLine.attr( parent.connStyle.style );
+
+            if ( treeNode.drawLineThrough || treeNode.pseudo ) {
+                treeNode.drawLineThroughMe( hidePoint );
+            }			
+			treeNode.connector = connLine;
+			return this;
+		}
     };
 
     /**
