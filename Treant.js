@@ -1088,19 +1088,19 @@
         },
         
         /**
-         * @returns node with name = {name}
+         * @returns {Node}
          */
         getNodeByName: function (name) {
             for (var i = 0; i < this.nodeDB.db.length; i++) {
-                if (tree.nodeDB.db[i].text.name === name) {
-                    return tree.nodeDB.db[i];
+                if (this.nodeDB.db[i].text.name === name) {
+                    return this.nodeDB.db[i];
                 }
             }
             return null;            
         },
         /**
          * Creates parent
-         * @returns nothing
+         * @returns {null}
          */
         addConnectionToNode: function( treeNode, hidePoint, targetNode ) {
 			var stacked = treeNode.stackParentId,
